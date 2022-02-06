@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-protected
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    #    nginx.ingress.kubernetes.io/use-regex: true
+    #    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/auth-response-headers: User-Id
+    nginx.ingress.kubernetes.io/auth-method: POST
+    nginx.ingress.kubernetes.io/auth-url: http://ms-auth-loadbalancer.default.svc.cluster.local:80/api/auth/token/active
+spec:
+  rules:
+    - host: harmonypro.club
+      http:
+        paths:
+          - path: /api/dayoff
+            pathType: Prefix
+            backend:
+              service:
+                name: ms-dayoff-loadbalancer
+                port:
+                  number: 80
+          - path: /api/user
+            pathType: Prefix
+            backend:
+              service:
+                name: ms-user-loadbalancer
+                port:
+                  number: 80
+          - path: /int/api/user
+            pathType: Prefix
+            backend:
+              service:
+                name: ms-user-loadbalancer
+                port:
+                  number: 80
+          - path: /api/businesstrip
+            pathType: Prefix
+            backend:
+              service:
+                name: ms-business-trip-loadbalancer
+                port:
+                  number: 80
+          - path: /api/itsupport
+            pathType: Prefix
+            backend:
+              service:
+                name: ms-it-support-loadbalancer
+                port:
+                  number: 80

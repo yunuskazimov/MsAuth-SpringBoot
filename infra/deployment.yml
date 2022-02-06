@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-auth-deployment
+  labels:
+    app: ms-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-auth
+  template:
+    metadata:
+      labels:
+        app: ms-auth
+    spec:
+      containers:
+        - env:
+            - name: DB_AUTH_URL
+              valueFrom:
+                secretKeyRef:
+                  key: MS_AUTH_URL
+                  name: ms.auth.secrets
+            - name: DB_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USERNAME
+                  name: ms.auth.secrets
+            - name: DB_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: ms.auth.secrets
+            - name: MS_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: MS_AUTH_PORT
+                  name: ms.auth.secrets
+            - name: USER_CLIENT
+              valueFrom:
+                secretKeyRef:
+                  key: MS_AUTH_CLINET_MS_USER_URL
+                  name: ms.auth.secrets
+            - name: PERMISSION_CLINET
+              valueFrom:
+                secretKeyRef:
+                  key: CLIENT_MS_PERMISSION_URL
+                  name: ms.auth.secrets
+          name: ms-auth
+          image: yunuskazimov94/ms-auth-a
+          ports:
+            - containerPort: 8090
+              protocol: TCP
+#          readinessProbe:
+#            httpGet:
+#              path: /readiness
+#              port: 8090
+#            initialDelaySeconds: 45
+#            periodSeconds: 15
+#          livenessProbe:
+#            httpGet:
+#              path: /liveness
+#              port: 8090
+#            initialDelaySeconds: 45
+#            periodSeconds: 15
