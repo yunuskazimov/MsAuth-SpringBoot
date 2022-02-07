@@ -9,6 +9,10 @@ metadata:
     nginx.ingress.kubernetes.io/auth-response-headers: User-Id
     nginx.ingress.kubernetes.io/auth-method: POST
     nginx.ingress.kubernetes.io/auth-url: http://ms-auth-loadbalancer.default.svc.cluster.local:80/api/auth/token/active
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, UPDATE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
 spec:
   rules:
     - http:
