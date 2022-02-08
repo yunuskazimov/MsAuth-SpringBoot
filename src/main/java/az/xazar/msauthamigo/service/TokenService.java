@@ -7,4 +7,5 @@ import java.io.IOException;
 public interface TokenService {
 
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    void activeTokenCheck(HttpServletRequest request, HttpServletResponse response);
 }
