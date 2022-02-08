@@ -36,17 +36,7 @@ public class AuthController {
 
     @PostMapping("/token/active")
     public void activeToken(HttpServletRequest request, HttpServletResponse response) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring("Bearer ".length());
-            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-            String username = decodedJWT.getSubject();
-            log.info("activeToken controller username: {}", username);
-            Long userId = userService.getUser(username).getId();
-            response.addHeader("User-Id", userId.toString());
-        }
+       tokenService.activeTokenCheck(request, response);
     }
 
     @Data
